@@ -1,0 +1,11 @@
+[package]
+name = "monitor-switcher"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ddc-winapi = "0.2"
+ddc = "0.2.2"
+clap = { version = "4.0", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
