@@ -4,7 +4,11 @@ DDC/CI経由でモニターの入力を切り替えるコマンドラインツ�
 
 ## Setup
 
-### Installation
+### Install
+
+[Release](https://github.com/7ew1r/monitor-switcher/releases)
+
+### Build
 
 ```powershell
 cargo build --release
