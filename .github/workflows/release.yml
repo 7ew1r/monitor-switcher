@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+      
+    - name: Build release
+      run: cargo build --release
+      
+    - name: Create release package
+      run: |
+        mkdir release-package
+        copy target\release\monitor-switcher.exe release-package\
+        copy config.toml release-package\
+        copy README.md release-package\
+        copy LICENSE release-package\
+        
+    - name: Create archive
+      run: |
+        Compress-Archive -Path release-package\* -DestinationPath monitor-switcher-${{ github.ref_name }}.zip
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          monitor-switcher-${{ github.ref_name }}.zip
+          target/release/monitor-switcher.exe
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
