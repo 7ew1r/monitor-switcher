@@ -63,9 +63,14 @@ fn main() {
                 };
                 
                 if is_target_monitor {
-                    match ddc.set_vcp_feature(INPUT_SELECT_VCP_CODE, args.value) {
-                        Ok(_) => println!("Successfully set VCP code 0x{:02X} to {}", INPUT_SELECT_VCP_CODE, args.value),
-                        Err(e) => println!("Error setting VCP feature: {:?}", e),
+                    let current_value = value.value();
+                    if current_value != args.value {
+                        match ddc.set_vcp_feature(INPUT_SELECT_VCP_CODE, args.value) {
+                            Ok(_) => println!("Successfully set VCP code 0x{:02X} from {} to {}", INPUT_SELECT_VCP_CODE, current_value, args.value),
+                            Err(e) => println!("Error setting VCP feature: {:?}", e),
+                        }
+                    } else {
+                        println!("VCP code 0x{:02X} is already set to {}, no change needed", INPUT_SELECT_VCP_CODE, current_value);
                     }
                     break;
                 }
